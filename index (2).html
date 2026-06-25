@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Bio | Link</title>
+    <style>
+        :root {
+            --bg-dark: #050508;
+            --discord: #5865F2;
+            --youtube: #ff0000;
+            --tiktok: #00f2fe;
+            --twitch: #9146FF;
+            --text-color: #ffffff;
+            --gaming-neon: #ff007f;
+            --gaming-cyan: #00f2fe;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* NOUVEAU FOND ANIMÉ GAMING (Grille 3D Synthwave + Lignes Néon) */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 30%, #1a0b2e 0%, #050508 80%);
+            overflow: hidden;
+        }
+
+        /* Grille en perspective */
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 200%;
+            top: 20%;
+            left: -100%;
+            background-image: 
+                linear-gradient(to right, rgba(255, 0, 127, 0.15) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 0, 127, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(75deg);
+            transform-origin: top center;
+            animation: gridMove 4s linear infinite;
+        }
+
+        /* Effet de lueurs mouvantes (Aurores Gaming) */
+        .animated-bg::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(0, 242, 254, 0.12) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 60%, rgba(145, 70, 255, 0.15) 0%, transparent 45%);
+            animation: waveMovement 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 50px; }
+        }
+
+        @keyframes waveMovement {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, -5%) rotate(10deg); }
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .bio-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 25px;
+            text-align: center;
+            box-sizing: border-box;
+            background: rgba(5, 5, 10, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 0, 127, 0.2);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            animation: fadeInContainer 1s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeInContainer {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* AVATAR AVEC ANIMATION DE GLOW */
+        .avatar-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px auto;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .avatar-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--discord), var(--tiktok), var(--twitch));
+            z-index: 1;
+            filter: blur(10px);
+            animation: pulseGlow 3s linear infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        /* STYLE POUR LE STATUT DISCORD */
+        .discord-status-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 14px;
+            margin: -10px auto 20px auto;
+            width: fit-content;
+            font-size: 0.85em;
+            color: #b9bbbe;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #747f8d; /* Hors ligne par défaut */
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Classes dynamiques pour la couleur du statut */
+        .status-dot.online { background-color: #23a55a; box-shadow: 0 0 10px #23a55a; }
+        .status-dot.idle { background-color: #f0b232; box-shadow: 0 0 10px #f0b232; }
+        .status-dot.dnd { background-color: #f23f43; box-shadow: 0 0 10px #f23f43; }
+        .status-dot.offline { background-color: #747f8d; }
+
+        h1 {
+            font-size: 1.8em;
+            margin: 10px 0 5px 0;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, #fff, #a5aabf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(88, 101, 242, 0.15);
+            color: #b9bbbe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            margin-bottom: 25px;
+        }
+
+        /* BOUTONS ET RÉSEAUX */
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .bio-link {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1.05em;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: block;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Effets individuels au survol pour chaque réseau */
+        .btn-discord:hover {
+            background: var(--discord);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
+            border-color: transparent;
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-youtube:hover {
+            background: var(--youtube);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            border-color: transparent;
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-tiktok:hover {
+            background: #000000;
+            box-shadow: -3px -3px 10px rgba(0, 242, 254, 0.4), 3px 3px 10px rgba(254, 44, 85, 0.4);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-twitch:hover {
+            background: var(--twitch);
+            box-shadow: 0 0 20px rgba(145, 70, 255, 0.5);
+            border-color: transparent;
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* Effet de reflet brillant au survol */
+        .bio-link::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-25deg);
+            transition: 0.75s;
+        }
+
+        .bio-link:hover::after {
+            left: 125%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="animated-bg"></div>
+
+    <div class="bio-container">
+        
+        <div class="avatar-wrapper">
+            <div class="avatar-glow"></div>
+            <img class="avatar" src="https://via.placeholder.com/150" alt="Avatar">
+        </div>
+        
+        <h1>TON PSEUDO</h1>
+        <div class="tag">STREAMER / GAMER</div>
+
+        <div class="discord-status-box">
+            <div id="status-dot" class="status-dot"></div>
+            <span id="status-text">Chargement du statut...</span>
+        </div>
+
+        <div class="links-wrapper">
+            <a href="LIEN_INVITATION_DISCORD" target="_blank" class="bio-link btn-discord">
+                👾 Rejoindre le Discord
+            </a>
+
+            <a href="LIEN_CHAINE_YOUTUBE" target="_blank" class="bio-link btn-youtube">
+                🔴 Ma Chaîne YouTube
+            </a>
+
+            <a href="LIEN_TIKTOK" target="_blank" class="bio-link btn-tiktok">
+                📱 Mon Compte TikTok
+            </a>
+
+            <a href="LIEN_TWITCH" target="_blank" class="bio-link btn-twitch">
+                🔮 Diffusions Twitch
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Remplacer par ton propre ID Discord (Exemple : 272465324349849600)
+        const DISCORD_ID = "TON_ID_DISCORD_ICI"; 
+
+        async function fetchDiscordStatus() {
+            try {
+                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const data = await response.json();
+                
+                if (data.success && data.data) {
+                    const status = data.data.discord_status;
+                    const dot = document.getElementById('status-dot');
+                    const text = document.getElementById('status-text');
+                    
+                    // Nettoyage des classes
+                    dot.className = 'status-dot';
+                    
+                    // Gestion de l'état
+                    if (status === 'online') {
+                        dot.classList.add('online');
+                        text.innerText = 'En ligne sur Discord';
+                    } else if (status === 'idle') {
+                        dot.classList.add('idle');
+                        text.innerText = 'Inactif';
+                    } else if (status === 'dnd') {
+                        dot.classList.add('dnd');
+                        text.innerText = 'Ne pas déranger';
+                    } else {
+                        dot.classList.add('offline');
+                        text.innerText = 'Hors ligne';
+                    }
+
+                    // Optionnel : Si tu joues à un jeu, l'afficher
+                    if (data.data.activities && data.data.activities.length > 0) {
+                        const gameActivity = data.data.activities.find(act => act.type === 0);
+                        if (gameActivity) {
+                            text.innerText = `Joue à : ${gameActivity.name}`;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Erreur statut Discord:", error);
+                document.getElementById('status-text').innerText = 'Statut indisponible';
+            }
+        }
+
+        // Lance la fonction immédiatement et s'actualise toutes les 15 secondes
+        if(DISCORD_ID !== "TON_ID_DISCORD_ICI") {
+            fetchDiscordStatus();
+            setInterval(fetchDiscordStatus, 15000);
+        } else {
+            document.getElementById('status-text').innerText = 'Configure ton ID Discord';
+        }
+    </script>
+
+</body>
+</html>
