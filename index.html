@@ -302,9 +302,8 @@
         </div>
     </div>
 
-    <script>
-        // Remplacer par ton propre ID Discord (Exemple : 272465324349849600)
-        const DISCORD_ID = "TON_ID_DISCORD_ICI"; 
+<script>
+        const DISCORD_ID = "1136704051971624992"; 
 
         async function fetchDiscordStatus() {
             try {
@@ -315,11 +314,19 @@
                     const status = data.data.discord_status;
                     const dot = document.getElementById('status-dot');
                     const text = document.getElementById('status-text');
+                    const avatarImg = document.querySelector('.avatar');
                     
-                    // Nettoyage des classes
+                    // 1. Mise à jour automatique de l'avatar Discord
+                    if (data.data.discord_user && data.data.discord_user.avatar) {
+                        const avatarId = data.data.discord_user.avatar;
+                        // Gère si l'avatar est un GIF animé ou une image fixe
+                        const extension = avatarId.startsWith('a_') ? 'gif' : 'png';
+                        avatarImg.src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${avatarId}.${extension}`;
+                    }
+                    
+                    // 2. Nettoyage et gestion du statut
                     dot.className = 'status-dot';
                     
-                    // Gestion de l'état
                     if (status === 'online') {
                         dot.classList.add('online');
                         text.innerText = 'En ligne sur Discord';
@@ -334,7 +341,7 @@
                         text.innerText = 'Hors ligne';
                     }
 
-                    // Optionnel : Si tu joues à un jeu, l'afficher
+                    // 3. Affichage du jeu si présent
                     if (data.data.activities && data.data.activities.length > 0) {
                         const gameActivity = data.data.activities.find(act => act.type === 0);
                         if (gameActivity) {
@@ -348,12 +355,12 @@
             }
         }
 
-        // Lance la fonction immédiatement et s'actualise toutes les 15 secondes
-        if(DISCORD_ID !== "TON_ID_DISCORD_ICI") {
+        // Exécution immédiate
+        if (DISCORD_ID !== "" && DISCORD_ID !== "TON_ID_DISCORD_ICI") {
             fetchDiscordStatus();
             setInterval(fetchDiscordStatus, 15000);
         } else {
-            document.getElementById('status-text').innerText = 'Configure ton ID Discord';
+            document.getElementById('status-text').innerText = 'ID non configuré';
         }
     </script>
 
